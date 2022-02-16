@@ -98,6 +98,8 @@ def play_playlist(playlist, window):
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'mp3',
                 }],
+                'logger': ytdlProgress(),
+                'progress_hooks': [ytdl_progress_hook],
                 'keepvideo': False,
                 'outtmpl': i,
             }
@@ -108,6 +110,7 @@ def play_playlist(playlist, window):
                 os.makedirs("files")
             window.write_event_value('-THREAD-', '----------------\nDownload complete!\n----------------')
             os.rename(i, f"files/{i}")
+            queue.append(i)
 
     con.close()
 
@@ -126,6 +129,7 @@ def play_mp3(mp3_filename, window):
 def pause_music(window):
     global playing
     pass
+
 
 def stop_music(window):
     global playing
