@@ -1,0 +1,8 @@
+# This is a config file for Music Manager.
+
+
+settings:
+  theme: "default" # this supports any pysimplegui theme name. "default" = none (default theme)
+
+
+verison: 0.2.4
