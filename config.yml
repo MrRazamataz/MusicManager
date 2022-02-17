@@ -3,4 +3,4 @@
 
 settings:
   theme: "default" # this supports any pysimplegui theme name. "default" = none (default theme)
-
+  enable_update_checker: true
