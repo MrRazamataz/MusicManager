@@ -14,6 +14,25 @@ global window
 queue = []
 with open("config.yml", 'r') as yaml_read:
     config = yaml.safe_load(yaml_read)
+from decimal import Decimal
+version = Decimal("0.11")
+# Update checker
+outdated = False
+try:
+    version_url = "https://mrrazamataz.ga/archive/python/musicman/version.txt"
+    response = requests.get(version_url)
+    ver = response.text
+    vernum = Decimal(ver)
+    if vernum == version:
+        outdated = False
+    elif vernum < version:
+        outdated = False
+    elif vernum > version:
+        outdated = True
+    else:
+        pass
+except Exception as e:
+    pass
 
 
 class ytdlProgress(object):
@@ -25,6 +44,7 @@ class ytdlProgress(object):
 
     def error(self, msg):
         print(msg)
+
 
 def ytdl_progress_hook(d):
     if "_percent_str" in d:
@@ -207,12 +227,16 @@ def the_gui():
         pass
     else:
         sg.theme(config["settings"]["theme"])
-
+    if outdated:
+        version_text = f"There is an update available: {vernum}"
+    else:
+        version_text = f"Music Manager {version} by MrRazamataz"
     layout = [[sg.Text('Song name:'), sg.Input(key="music_name")],
               [sg.Text(), sg.Button('Play', bind_return_key=True), sg.Button('Stop'), sg.Button('Add to playlist'),
                sg.Button('Remove from playlist'), sg.Button('Play playlist'), sg.Button('Effects')],
               [sg.Text(size=(40, 1), key='task')],
-              [sg.Output(size=(70, 6))]
+              [sg.Output(size=(70, 6))],
+              [sg.Text(version_text)]
               ]
     global window
     window = sg.Window('Music Manager', layout)
